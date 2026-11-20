@@ -1,0 +1,21 @@
+# Personal data and downloaded/built models: never committed
+.venv/
+data/audio/
+data/text/
+models/
+results/*.wav
+*.zip
+
+# Guard: nothing from Dragon NaturallySpeaking or the earlier analysis may enter this repo.
+# OpenDragon is built only from published methods and open-source models.
+Dragon16-analysis/
+decompiled-dotnet/
+dragon-schema/
+*.dll
+*.exe
+*.svc
+*.dat
+*.nwv
+*.usr
+*.voc
+*.ini

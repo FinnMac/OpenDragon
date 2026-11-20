@@ -1,0 +1,164 @@
+<title>OpenDragon Laptop Hand-over</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: a single reading column, like an engineer's lab notebook; status chips mark what's done, open and next */
+:root {
+  --bg: #f6f7f9; --surface: #ffffff; --fg: #1b1f27; --muted: #5a6273;
+  --line: #dde1e8; --accent: #2f5fd0; --accent-soft: #e6edfb;
+  --done: #1f7a4d; --done-soft: #e2f3ea; --todo: #9a5b00; --todo-soft: #fbefdc;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151b; --surface: #1a1e26; --fg: #e6e9ef; --muted: #9aa3b4;
+  --line: #2c323d; --accent: #7fa2ff; --accent-soft: #1f2a44;
+  --done: #5fd39a; --done-soft: #16301f; --todo: #f0b55c; --todo-soft: #33260f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12151b; --surface: #1a1e26; --fg: #e6e9ef; --muted: #9aa3b4;
+  --line: #2c323d; --accent: #7fa2ff; --accent-soft: #1f2a44;
+  --done: #5fd39a; --done-soft: #16301f; --todo: #f0b55c; --todo-soft: #33260f; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 720px; margin: 0 auto; padding-block: 40px 64px; display: flex; flex-direction: column; gap: 36px }
+header { display: flex; flex-direction: column; gap: 8px }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+h1 { font: 600 32px/1.15 var(--font-display); margin: 0; text-wrap: balance }
+h2 { font: 600 19px/1.3 var(--font-display); margin: 0 0 12px; text-wrap: balance }
+p { margin: 0 }
+.lede { color: var(--muted); max-width: 62ch }
+section { display: flex; flex-direction: column; gap: 10px }
+code, .mono { font-family: var(--font-mono); font-size: .9em }
+code { background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere }
+.prompt { background: var(--surface); border: 1px solid var(--accent); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 14px }
+.prompt blockquote { margin: 0; font: 15px/1.55 var(--font-mono); overflow-wrap: anywhere }
+button { align-self: flex-start; font: 500 14px var(--font-body); color: #fff; background: var(--accent); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer }
+:root[data-theme="dark"] button { color: #10131a }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) button { color: #10131a } }
+button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px }
+ol.steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px }
+ul.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--line) }
+ul.list li { display: flex; gap: 12px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line) }
+ul.list li > span:last-child { min-width: 0 }
+.chip { flex: none; font: 500 11px/1 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; padding: 4px 7px; border-radius: 999px; width: 54px; text-align: center }
+.chip.done { color: var(--done); background: var(--done-soft) }
+.chip.todo { color: var(--todo); background: var(--todo-soft) }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top }
+tr:last-child td { border-bottom: 0 }
+th { font: 500 12px var(--font-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted) }
+td.num { font-family: var(--font-mono) }
+.note { color: var(--muted); font-size: 14px }
+</style>
+
+<main>
+  <header>
+    <span class="eyebrow">OpenDragon · Stage 0 · 21 Nov 2026</span>
+    <h1>Moving OpenDragon to the laptop</h1>
+    <p class="lede">Everything a new Claude session on the laptop needs to carry on building OpenDragon. OpenDragon is an open-source recogniser built the way Dragon NaturallySpeaking 16 is built: features, acoustic network, word-graph search, lattices, then learning your voice. It is built only from published methods and open models.</p>
+  </header>
+
+  <section>
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li>Copy <code>Documents\OpenDragon-handover.zip</code> (2.5 MB) from the desktop to the laptop, by OneDrive or a USB stick.</li>
+      <li>Unzip it into the laptop's <code>Documents</code> folder, so the paths match the desktop's.</li>
+      <li>Shut the desktop down. Nothing from OpenDragon is running on it.</li>
+      <li>On the laptop, open the Claude app, start a session in <code>Documents</code>, and paste the prompt below.</li>
+    </ol>
+  </section>
+
+  <section class="prompt" aria-label="Prompt for the new session">
+    <span class="eyebrow">Paste into the new session</span>
+    <blockquote id="prompt-text">Read Documents\OpenDragon\HANDOVER.md and PLAN.md, then continue Stage 0 of OpenDragon from where the hand-over says. Recreate the venv first.</blockquote>
+    <button id="copy-btn" type="button">Copy prompt</button>
+  </section>
+
+  <section>
+    <h2>Where Stage 0 stands</h2>
+    <ul class="list">
+      <li><span class="chip done">Done</span><span>Build plan agreed (<code>PLAN.md</code>), and you said to start Stage 0.</span></li>
+      <li><span class="chip done">Done</span><span>Project folders and an empty git repo (<code>main</code>, no commits yet).</span></li>
+      <li><span class="chip todo">Redo</span><span>Python environment: it isn't in the zip, so it is recreated on the laptop (numpy, vosk, sounddevice, pytest).</span></li>
+      <li><span class="chip todo">To do</span><span><strong>Scoring code.</strong> Word error rate, name accuracy and speed, with tests.</span></li>
+      <li><span class="chip todo">To do</span><span><strong>Sentence lists.</strong> About 120 sentences for learning your voice and 60 different ones for testing. No digits. About 15 test sentences have names or jargon, like Siobhan (“shiv-awn”), Ngaio (“nye-oh”) and Kubernetes.</span></li>
+      <li><span class="chip todo">To do</span><span><strong>Recording tool.</strong> Shows one sentence at a time; press space to start and stop. Saves 16 kHz mono wav.</span></li>
+      <li><span class="chip todo">To do</span><span><strong>Sanity check.</strong> Score the 9 usable test clips with the small Vosk model (40 MB). Leave out <code>me_01.wav</code>, which is silent.</span></li>
+      <li><span class="chip todo">To do</span><span>Write the results to <code>STAGES.md</code>, make the first commit, and check in with you.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Earlier results to beat (same 9 clips)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Recogniser</th><th>Word error rate</th></tr></thead>
+        <tbody>
+          <tr><td>Whisper small.en</td><td class="num">15.2%</td></tr>
+          <tr><td>Parakeet 0.6B</td><td class="num">16.3%</td></tr>
+          <tr><td>Moonshine base</td><td class="num">28.3%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">With only about 93 words, one mistake moves the rate by about 1 point. That's why the new, larger test set matters.</p>
+  </section>
+
+  <section>
+    <h2>What's in the zip</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Folder under Documents</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">OpenDragon\</td><td>The project: plan, hand-over note, folder layout, git repo</td></tr>
+          <tr><td class="mono">OpenDictate\voice-test-70\</td><td>Your 10 test recordings and <code>prompts.json</code></td></tr>
+          <tr><td class="mono">OpenDictate\experiments\personal-lm\</td><td>Why fusing a language model into Parakeet failed for names</td></tr>
+          <tr><td class="mono">Dragon16-analysis\</td><td>Dragon's reconstructed architecture and parameter names</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Check on the laptop before the big stages</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Desktop had</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>RAM</td><td class="num">16 GB</td><td>The laptop matches. The graph build is aimed at 8 GB or less.</td></tr>
+          <tr><td>Free disk</td><td class="num">29.8 GB</td><td>The plan needs about 13–18 GB.</td></tr>
+          <tr><td>WSL (Linux)</td><td>Ubuntu 20.04</td><td>Kaldi runs there. If it's missing, the session asks before installing it.</td></tr>
+          <tr><td>Python</td><td class="num">3.13</td><td>For the project's environment.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Compiling Kaldi in Stage 1b keeps every core busy for 1–2 hours, perhaps longer on a laptop. It only starts when you say it's a good time.</p>
+  </section>
+
+  <section>
+    <h2>Ground rules</h2>
+    <ul class="list">
+      <li><span class="chip done">Rule</span><span>Ask before any download over about 100 MB, and before installing system software, including Linux packages.</span></li>
+      <li><span class="chip done">Rule</span><span>Never decrypt, extract, convert or share Dragon's files. Only open-source models and published methods.</span></li>
+      <li><span class="chip done">Rule</span><span>Explain each stage in plain English and check in at the end of each one.</span></li>
+    </ul>
+  </section>
+</main>
+
+<script>
+document.getElementById('copy-btn').addEventListener('click', function () {
+  var btn = this, text = document.getElementById('prompt-text').textContent;
+  function selectIt() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById('prompt-text'));
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = 'Selected: press Ctrl+C';
+  }
+  try {
+    navigator.clipboard.writeText(text).then(function () { btn.textContent = 'Copied'; }, selectIt);
+  } catch (e) { selectIt(); }
+});
+</script>
