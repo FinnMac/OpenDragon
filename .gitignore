@@ -19,3 +19,6 @@ dragon-schema/
 *.usr
 *.voc
 *.ini
+*.egg-info/
+__pycache__/
+.pytest_cache/
